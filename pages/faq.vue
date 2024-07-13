@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import { ref, watch } from 'vue';
+
 //#region Fetch Data
 
 import type TResponse from '~/entities/TResponse';
@@ -81,8 +83,27 @@ useHead({
     title: 'سوالات متداول | اوکی اکسچنج'
 });
 
-useScriptTag("/material/scripts/collapse.js")
-useScriptTag("/material/scripts/dialog.js")
+import { useScriptTag } from '@vueuse/core'
+import { onUnmounted } from "vue";
+
+const { scriptTag, load, unload } = useScriptTag(
+'/material/scripts/collapse.js',
+() => { },
+{ manual: true }
+);
+
+watch(faqs, async (newVal, oldVal) =>
+{
+    if(!oldVal)
+    {
+        await load();
+    }
+});
+
+onUnmounted(async () =>
+{
+    await unload();
+})
 
 //#endregion
 
@@ -134,6 +155,14 @@ useScriptTag("/material/scripts/dialog.js")
         </div>
 
         <div v-if="!faqs" class="w-full flex flex-col items-center justify-center">
+            <div class="p-7 rounded-lg bg-gray-100">
+                <p dir="rtl">
+                    در حال دریافت اطلاعات ...
+                </p>
+            </div>
+        </div>
+
+        <div v-else-if="!faqs.status" class="w-full flex flex-col items-center justify-center">
             <div class="p-7 rounded-lg bg-gray-100">
                 <p dir="rtl">
                     مشکلی در فرآیند نمایش اطلاعات بوجود آمده است!

@@ -15,28 +15,28 @@ useScriptTag("/material/scripts/popover.js")
         <div class="flex flex-row-reverse flex-wrap items-center justify-between py-3.5 px-5">
 
             <div class="flex flex-row-reverse items-center gap-4 md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
-                <a href="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+                <NuxtLink to="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 md:border-0 md:hover:text-primary-900 md:p-0">
                     ورود
-                </a>
+                </NuxtLink>
 
-                <a href="/" class="block flex flex-row-reverse items-center gap-3 p-1.5 ps-9 rounded-full text-white bg-primary">
-                    <img src="~/assets/icons/profile.svg"
+                <NuxtLink to="/" class="block flex flex-row-reverse items-center gap-3 p-1.5 ps-9 rounded-full text-white bg-primary">
+                    <img src="~/assets/icons/top-menu/profile.svg"
                          class="w-8"
                          title="ثبت نام"
                          alt="ثبت نام"
                     />
 
                     ثبت نام
-                </a>
+                </NuxtLink>
 
-                <a href="/">
-                    <img src="~/assets/icons/download.webp"
+                <NuxtLink to="/">
+                    <img src="~/assets/icons/top-menu/download.webp"
                          class="w-9"
                          data-popover-target="popover-download"
                          alt="دانلود اپلیکیشن"
                          title="دانلود اپلیکیشن"
                     />
-                </a>
+                </NuxtLink>
 
                 <div class="absolute invisible z-[999] flex w-[400px] px-4 flex-row-reverse items-center gap-2 overflow-hidden whitespace-normal break-words rounded-xl border border-blue-gray-50 bg-white p-0 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none"
                      aria-labelledby=":r3a:-label"
@@ -58,11 +58,11 @@ useScriptTag("/material/scripts/popover.js")
                             مقابل را اسکن کنید.
                         </p>
 
-                        <a class="select-none rounded-lg border border-primary py-2 px-3 text-center align-middle text-base font-yekanbakh uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                           href="/"
+                        <NuxtLink class="select-none rounded-lg border border-primary py-2 px-3 text-center align-middle text-base font-yekanbakh uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                  to="/"
                         >
                             دانلود اپلیکیشن
-                        </a>
+                        </NuxtLink>
                     </div>
 
                     <img src="~/assets/images/qr-code-download.png"
@@ -74,25 +74,25 @@ useScriptTag("/material/scripts/popover.js")
             </div>
 
             <div id="mega-menu" dir="rtl" class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 gap-16">
-                <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <NuxtLink to="/" class="flex items-center space-x-3 rtl:space-x-reverse">
                     <img src="~/assets/logo/okex.png" class="h-9" alt="اوکی اکسچنج" title="اوکی اکسچنج" />
-                </a>
+                </NuxtLink>
 
                 <ul class="flex flex-col mt-4 font-medium md:flex-row md:mt-0 md:space-x-8 rtl:space-x-reverse">
                     <li>
-                        <a href="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0" aria-current="page">
+                        <NuxtLink to="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 md:border-0 md:hover:text-primary-900 md:p-0" aria-current="page">
                             بازار حرفه‌ای
-                        </a>
+                        </NuxtLink>
                     </li>
 
                     <li>
-                        <a href="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0" aria-current="page">
+                        <NuxtLink to="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 md:border-0 md:hover:text-primary-900 md:p-0" aria-current="page">
                             تبادل سریع
-                        </a>
+                        </NuxtLink>
                     </li>
 
                     <li>
-                        <button id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown" class="flex items-center justify-between w-full py-2 px-3 font-medium text-gray-900 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0">
+                        <button id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown" class="flex items-center justify-between w-full py-2 px-3 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:border-0 md:hover:text-primary-900 md:p-0">
                             خرید و فروش ارز دیجیتال
 
                             <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -172,21 +172,21 @@ useScriptTag("/material/scripts/popover.js")
                     </li>
 
                     <li>
-                        <a href="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0" aria-current="page">
+                        <NuxtLink to="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 md:border-0 md:hover:text-primary-900 md:p-0" aria-current="page">
                             تماس باما
-                        </a>
+                        </NuxtLink>
                     </li>
 
                     <li>
-                        <a href="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0" aria-current="page">
+                        <NuxtLink to="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 md:border-0 md:hover:text-primary-900 md:p-0" aria-current="page">
                             درباره ما
-                        </a>
+                        </NuxtLink>
                     </li>
 
                     <li>
-                        <a href="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0" aria-current="page">
+                        <NuxtLink to="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 md:border-0 md:hover:text-primary-900 md:p-0" aria-current="page">
                             کسب درآمد
-                        </a>
+                        </NuxtLink>
                     </li>
                 </ul>
             </div>
