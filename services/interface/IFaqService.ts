@@ -3,7 +3,7 @@ import FaqEntity from "~/entities/faq/FaqEntity";
 
 interface IFaqService
 {
-    get(): Promise<TResponse<FaqEntity | null>>;
+    get(): Promise<TResponse<Array<FaqEntity> | null>>;
 }
 
 export default IFaqService;

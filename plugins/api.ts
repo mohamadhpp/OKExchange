@@ -1,24 +1,22 @@
 // @ts-ignore
 import { $fetch, FetchOptions } from 'ofetch';
 import FaqModule from '~/repository/modules/FaqModule';
+import CoinModule from '~/repository/modules/CoinModule';
 
 interface IApiInstance
 {
     faq: FaqModule;
+    coin: CoinModule;
 }
 
 export default defineNuxtPlugin((nuxtApp) =>
 {
-    const config = useRuntimeConfig();
-    const fetchOptions: FetchOptions =
-    {
-        baseURL: config.public.SITE_API_BASE_URL
-    };
+    const apiFetcher = $fetch.create(null);
 
-    const apiFetcher = $fetch.create(fetchOptions);
     const modules: IApiInstance =
     {
-        faq: new FaqModule(apiFetcher)
+        faq: new FaqModule(apiFetcher),
+        coin: new CoinModule(apiFetcher)
     };
 
     return {

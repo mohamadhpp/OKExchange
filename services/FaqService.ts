@@ -6,11 +6,11 @@ class FaqService implements IFaqService
 {
     constructor() { }
 
-    get(): Promise<TResponse<FaqEntity | null>>
+    get(): Promise<TResponse<Array<FaqEntity> | null>>
     {
         return new Promise(async (resolve, reject) =>
         {
-            let response: TResponse<FaqEntity | null> =
+            let response: TResponse<Array<FaqEntity> | null> =
             {
                 status: false,
                 message: "",
@@ -33,6 +33,23 @@ class FaqService implements IFaqService
 
                     reject(response);
                     return;
+                }
+            }
+
+            // Resolve visibility property
+            // @ts-ignore
+            for (let faq of response.data)
+            {
+                faq.visibility = true;
+
+                for (let children of faq.children)
+                {
+                    children.visibility = true;
+
+                    for (let row of children.rows)
+                    {
+                        row.visibility = true;
+                    }
                 }
             }
 

@@ -27,7 +27,8 @@ export default defineNuxtConfig({
     {
         public:
         {
-            SITE_API_BASE_URL: process.env.SITE_API_BASE_URL
+            siteApi: process.env.SITE_API_BASE_URL,
+            marketApi: process.env.MARKET_API_BASE_URL
         }
     },
 

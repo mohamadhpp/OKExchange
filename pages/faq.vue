@@ -9,30 +9,14 @@ import type FaqEntity from '~/entities/faq/FaqEntity';
 
 const { $services } = useNuxtApp();
 
-let faqs: TResponse<FaqEntity> = ref(null);
+let faqs: TResponse<Array<FaqEntity>> = ref(null);
 
-$services.faq.get().then((response: TResponse<FaqEntity>) =>
+$services.faq.get().then((response: TResponse<Array<FaqEntity>>) =>
 {
-    for (let faq of response.data)
-    {
-        faq.visibility = true;
-
-        for (let children of faq.children)
-        {
-            children.visibility = true;
-
-            for (let row of children.rows)
-            {
-                row.visibility = true;
-            }
-        }
-    }
-
     faqs.value = { ...response };
 })
-.catch((error: TResponse<FaqEntity>) =>
+.catch((error: TResponse<Array<FaqEntity>>) =>
 {
-    mainFaqs.value = { ...error };
     faqs.value = { ...error };
 });
 
@@ -51,6 +35,7 @@ const SearchFaq = () =>
     }
 
     let search = searchField.value.value;
+    let search_str_len = search.trim().length;
 
     for(let faq of faqs.value.data)
     {
@@ -58,7 +43,7 @@ const SearchFaq = () =>
         {
             for(let row of children.rows)
             {
-                if(search.trim().length > 0)
+                if(search_str_len > 0)
                 {
                     row.visibility = (row.question.includes(search) || row.answer.includes(search));
                 }
@@ -146,10 +131,12 @@ onUnmounted(async () =>
 
         <hr />
 
-        <div v-show="faqs && (faqs.data.length === 0 || faqs.data.filter(faq => faq.visibility).length === 0)" class="w-full h-full flex flex-col items-center justify-center">
+        <div v-show="faqs && (faqs.data.length === 0 || faqs.data.filter(faq => faq.visibility).length === 0)"
+             class="w-full h-full flex flex-col items-center justify-center"
+        >
             <div class="p-7 rounded-lg bg-gray-100">
                 <p dir="rtl">
-                    موردی جهت نمایش یافت نشد!
+                    موردی یافت نشد!
                 </p>
             </div>
         </div>

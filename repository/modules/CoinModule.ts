@@ -2,7 +2,7 @@
 import { FetchOptions } from 'ofetch';
 import FetchFactory from '../factory';
 
-class FaqModule extends FetchFactory<void>
+class CoinModule extends FetchFactory<void>
 {
     async get()
     {
@@ -12,7 +12,7 @@ class FaqModule extends FetchFactory<void>
 
             const fetchOptions: FetchOptions<'json'> =
             {
-                baseURL: config.public.siteApi,
+                baseURL: config.public.marketApi,
 
                 headers:
                 {
@@ -24,7 +24,7 @@ class FaqModule extends FetchFactory<void>
             return this.call
             (
             'Get',
-            "support/faq",
+            "market/tickers",
             undefined,
             fetchOptions
             );
@@ -32,4 +32,4 @@ class FaqModule extends FetchFactory<void>
     }
 }
 
-export default FaqModule;
+export default CoinModule;
