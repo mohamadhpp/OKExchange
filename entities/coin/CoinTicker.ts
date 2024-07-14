@@ -1,8 +1,10 @@
 interface CoinTicker
 {
+    instId: string,
     symbol: string,
     symbol_icon: string,
     last: string,
+    toman: string,
     last_str: string,
     best_ask: string,
     best_bid: string,

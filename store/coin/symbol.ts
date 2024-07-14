@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 
-export const useCoinStore = defineStore('app',
+export const useSymbolStore = defineStore('symbol',
 {
     state: () =>
     ({
-        favorites: useCookie('favorite-coin').value === undefined ? [] : useCookie('favorite-coin').value?.split(",")
+        favorites: useCookie('favorite-symbol').value === undefined ? [] : useCookie('favorite-symbol').value?.split(",")
     }),
 
     getters:
@@ -21,7 +21,7 @@ export const useCoinStore = defineStore('app',
         {
             this.favorites.push(symbol);
 
-            const favorites = useCookie('favorite-coin');
+            const favorites = useCookie('favorite-symbol');
             favorites.value = this.favorites.join();
         },
 
@@ -33,7 +33,7 @@ export const useCoinStore = defineStore('app',
             {
                 this.favorites.splice(index, 1);
 
-                const favorites = useCookie('favorite-coin');
+                const favorites = useCookie('favorite-symbol');
                 favorites.value = this.favorites.join();
             }
         }

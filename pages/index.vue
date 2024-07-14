@@ -1,11 +1,18 @@
 <script setup lang="ts">
 
-import {ref} from "vue";
+import {onBeforeUnmount, ref} from 'vue';
 
-//#region Fetch Data
-
+//#region Tickers Store
+import {useTickerStore} from '~/store/coin/ticker';
 import type TResponse from '~/entities/TResponse';
 import type MarketTicker from '~/entities/coin/MarketTicker';
+import {useSymbolStore} from '~/store/coin/symbol';
+
+const { tickers } = storeToRefs(useTickerStore());
+
+//#endregion
+
+//#region Fetch Data
 
 const { $services } = useNuxtApp();
 
@@ -14,6 +21,7 @@ let coins: TResponse<MarketTicker> = ref(null);
 $services.coin.get().then((response: TResponse<MarketTicker>) =>
 {
     coins.value = { ...response };
+    createObserver();
 })
 .catch((error: TResponse<MarketTicker>) =>
 {
@@ -24,20 +32,12 @@ $services.coin.get().then((response: TResponse<MarketTicker>) =>
 
 //#region Sort By Last 24 Hour Change
 
-const sortStatus = ref("desc");
+const sortType = ref("desc");
 
 const SortTickers = () =>
 {
-    sortStatus.value = (sortStatus.value === "desc" ? "asc" : "desc");
-
-    if(sortStatus.value === "asc")
-    {
-        coins.value.data.tickers.sort((a, b) => a.percentage_change - b.percentage_change);
-    }
-    else
-    {
-        coins.value.data.tickers.sort((a, b) => b.percentage_change - a.percentage_change);
-    }
+    sortType.value = (sortType.value === "desc" ? "asc" : "desc");
+    useTickerStore().sort(sortType.value);
 }
 
 //#endregion
@@ -49,34 +49,20 @@ const searchField = ref(null);
 const SearchCoin = () =>
 {
     // Faqs is not valid
-    if(!coins.value || coins.value.status === false || coins.value.data.tickers.length == 0)
+    if(!coins.value || coins.value.status === false || data.value.tickers.length == 0)
     {
         return;
     }
 
     let search = searchField.value.value.toUpperCase();
-    let search_str_len = search.trim().length;
-
-    for(let coin of coins.value.data.tickers)
-    {
-        if(search_str_len > 0)
-        {
-            coin.visibility = coin.symbol.includes(search);
-        }
-        else
-        {
-            coin.visibility = true;
-        }
-    }
+    useTickerStore().search(search);
 }
 
 //#endregion
 
-//#region Favorite
-
-import { useCoinStore } from '~/store/coin';
-const { addFavorite, deleteFavorite, getFavorites } = useCoinStore();
-const { favorites } = storeToRefs(useCoinStore());
+//#region Modify Favorite Symbol
+const { favorites } = storeToRefs(useSymbolStore());
+const { addFavorite, deleteFavorite, getFavorites } = useSymbolStore();
 
 const ToggleFavorite = (symbol: string) =>
 {
@@ -99,6 +85,10 @@ const ToggleFavorite = (symbol: string) =>
 useHead({
     title: 'لیست رمز ارزها | اوکی اکسچنج'
 });
+
+//#endregion
+
+//#region handle coin observer
 
 //#endregion
 
@@ -197,7 +187,11 @@ useHead({
                             </tbody>
 
                             <tbody v-if="coins" class="text-right">
-                                <tr v-for="coin in coins.data.tickers" v-show="coin.visibility" class="bg-white">
+                                <tr v-for="(coin, index) in tickers"
+                                    :key="index"
+                                    v-show="coin.visibility"
+                                    class="bg-white"
+                                >
                                     <td dir="ltr"
                                         class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap"
                                         :class="coin.percentage_change < 0 ? 'text-red-700' : 'text-green-700'"
@@ -209,7 +203,9 @@ useHead({
                                         {{ coin.last_str }}
                                     </td>
 
-                                    <td class="px-3 py-4 text-left flex flex-row-reverse items-center gap-2">
+                                    <td class="px-3 py-4 text-left flex flex-row-reverse items-center gap-2"
+                                        :title="coin.instId !== 'USDT-IRT' ? 'معادل تومانی: ' + coin.toman : ''"
+                                    >
                                         <button type="button"
                                                 @click="ToggleFavorite(coin.symbol)"
                                         >

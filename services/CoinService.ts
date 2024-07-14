@@ -1,10 +1,34 @@
 import MarketTicker from "~/entities/coin/MarketTicker";
 import TResponse from "~/entities/TResponse";
+import CoinTicker from "~/entities/coin/CoinTicker";
+import CoinUpdateTicker from "~/entities/coin/CoinUpdateTicker";
 import ICoinService from "~/services/interface/ICoinService";
+import { useTickerStore } from '~/store/coin/ticker';
+
+import { watch } from 'vue';
 
 class CoinService implements ICoinService
 {
-    constructor() { }
+    private ws: undefined;
+
+    constructor()
+    {
+        // Connect WS
+        const config = useRuntimeConfig();
+
+        this.ws = useWebSocket(config.public.tickerWs,
+        {
+            message: 'ping',
+            interval: 2500,
+            pongTimeout: 2000,
+        });
+
+        // @ts-ignore
+        watch(this.ws.data, (newData) =>
+        {
+            this.messageHandler(newData);
+        });
+    }
 
     get(): Promise<TResponse<MarketTicker | null>>
     {
@@ -38,29 +62,129 @@ class CoinService implements ICoinService
                 }
             }
 
+            let usdt_price = "0";
+
+            // @ts-ignore
+            let index = response.data.tickers.forEach((coin: CoinTicker) =>
+            {
+                if(coin.symbol === "USDT-IRT")
+                {
+                    usdt_price = coin.last;
+                    return;
+                }
+            })
+
             // @ts-ignore
             for(let ticker of response.data.tickers)
             {
-                // Resolve data
-                ticker.symbol_icon = ticker.symbol.split("-")[0].toLowerCase();
-                ticker.symbol = ticker.symbol.replace("-", "/");
-                ticker.visibility = true;
-
-                // Resolve last price data
-                ticker.last_str = ticker.last.split(".")[1] === "0" ? ticker.last.split(".")[0] : ticker.last;
-
-                if(ticker.last.split(".")[0].length > 3)
-                {
-                    ticker.last_str = Number(ticker.last_str).toLocaleString().toString();
-                }
-
-                // Calculate last 24 hours changes percentage
-                ticker.percentage_change = Number((((Number(ticker.last) - Number(ticker.open_24h)) / Number(ticker.open_24h)) * 100).toFixed(2));
+                this.fixTicker(ticker, usdt_price);
             }
 
+            const { setTicker } = useTickerStore();
+
+            // @ts-ignore
+            setTicker(response.data.tickers, response.data.code, response.data.msg);
             resolve(response);
         });
     }
+
+    subscribe(symbol: string): void
+    {
+        // @ts-ignore
+        this.ws.send(JSON.stringify(
+        {
+            "op":"subscribe",
+            "args":
+            [{
+                "channel":"tickers",
+                "instId": symbol
+            }]
+        }));
+    }
+
+    unsubscribe(symbol: string): void
+    {
+        // @ts-ignore
+        this.ws.send(JSON.stringify(
+        {
+            "op":"unsubscribe",
+            "args":
+            [{
+                "channel":"tickers",
+                "instId": symbol
+            }]
+        }));
+    }
+
+    //#region Privates
+
+    private messageHandler(data: any)
+    {
+        const { tickers } = storeToRefs(useTickerStore());
+
+        let update_ticker: CoinUpdateTicker = JSON.parse(data).data[0];
+        let index = tickers.value.map((item: CoinTicker) => item.symbol).indexOf(update_ticker.instId.replace("-", "/"));
+
+        if(index !== -1)
+        {
+            let coin_ticker: CoinTicker = tickers.value[index];
+
+            coin_ticker.symbol = update_ticker.instId;
+            coin_ticker.symbol_icon = "";
+            coin_ticker.last = update_ticker.last;
+            coin_ticker.open_24h = update_ticker.open24h;
+            coin_ticker.high_24h = Number(update_ticker.high24h);
+            coin_ticker.low_24h = Number(update_ticker.low24h);
+            coin_ticker.vol_24h_pair = Number(update_ticker.volCcy24h);
+            coin_ticker.vol_24h = Number(update_ticker.vol24h);
+            coin_ticker.ts = update_ticker.ts;
+            coin_ticker.percentage_change = 0;
+            coin_ticker.visibility = true;
+
+            this.fixTicker(coin_ticker);
+
+            const { updateTicker } = useTickerStore();
+            updateTicker(coin_ticker);
+        }
+    }
+
+    private fixTicker(ticker: CoinTicker, usdt_price: string = "0"): void
+    {
+        // Resolve data
+        ticker.symbol_icon = ticker.symbol.split("-")[0].toLowerCase();
+        ticker.instId = ticker.symbol;
+        ticker.symbol = ticker.symbol.replace("-", "/");
+        ticker.visibility = true;
+
+        if(usdt_price === "")
+        {
+            const { getUSDT } = useTickerStore();
+
+            if(getUSDT)
+            {
+                usdt_price = getUSDT.last;
+            }
+        }
+
+        // Set toman price
+        if(ticker.instId !== "USDT-IRT")
+        {
+            ticker.toman = Number((Number(usdt_price) * Number(ticker.last)).toFixed(0)).toLocaleString().toString();
+        }
+
+        // Resolve last price data
+        ticker.last_str = ticker.last.split(".")[1] === "0" ? ticker.last.split(".")[0] : ticker.last;
+
+        if(ticker.last.split(".")[0].length > 3)
+        {
+            ticker.last_str = Number(ticker.last_str).toLocaleString().toString();
+        }
+
+        // Calculate last 24 hours changes percentage
+        ticker.percentage_change = Number((((Number(ticker.last) - Number(ticker.open_24h)) / Number(ticker.open_24h)) * 100).toFixed(2));
+    }
+
+    //#endregion
 }
 
 export default CoinService;

@@ -41,10 +41,10 @@
                     <img :src="useDynamicallyAssets(`/assets/icons/aside-menu/${item.icon}`)"
                          :alt="item.text"
                          :class="item.text"
-                         class="w-8"
+                         class="w-7"
                     />
 
-                    <p class="font-yekanbakh text-xl md:hover:text-primary-900 transition-all duration-200 ease"
+                    <p class="font-yekanbakh text-lg md:hover:text-primary-900 transition-all duration-200 ease"
                        :class="isOpen ? '' : 'opacity-0 w-0'"
                     >
                         {{item.text}}

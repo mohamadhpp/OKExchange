@@ -13,6 +13,14 @@ export default defineNuxtConfig({
         '@pinia/nuxt'
     ],
 
+    nitro:
+    {
+        experimental:
+        {
+            websocket: true
+        }
+    },
+
     ssr: true,
 
     routeRules:
@@ -28,7 +36,8 @@ export default defineNuxtConfig({
         public:
         {
             siteApi: process.env.SITE_API_BASE_URL,
-            marketApi: process.env.MARKET_API_BASE_URL
+            marketApi: process.env.MARKET_API_BASE_URL,
+            tickerWs: process.env.TICKER_WS_URL
         }
     },
 
