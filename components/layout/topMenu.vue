@@ -184,8 +184,8 @@ useScriptTag("/material/scripts/popover.js")
                     </li>
 
                     <li>
-                        <NuxtLink to="/" class="block py-2 px-3 text-gray-900 border-b border-gray-100 md:border-0 md:hover:text-primary-900 md:p-0" aria-current="page">
-                            کسب درآمد
+                        <NuxtLink to="/faq" class="block py-2 px-3 text-gray-900 border-b border-gray-100 md:border-0 md:hover:text-primary-900 md:p-0" aria-current="page">
+                            سوالات متداول
                         </NuxtLink>
                     </li>
                 </ul>

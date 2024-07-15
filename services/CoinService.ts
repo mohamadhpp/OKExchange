@@ -5,30 +5,15 @@ import CoinUpdateTicker from "~/entities/coin/CoinUpdateTicker";
 import ICoinService from "~/services/interface/ICoinService";
 import { useTickerStore } from '~/store/coin/ticker';
 
+// @ts-ignore
 import { watch } from 'vue';
 
 class CoinService implements ICoinService
 {
     private ws: undefined;
+    private subscriptions: string[] = [];
 
-    constructor()
-    {
-        // Connect WS
-        const config = useRuntimeConfig();
-
-        this.ws = useWebSocket(config.public.tickerWs,
-        {
-            message: 'ping',
-            interval: 2500,
-            pongTimeout: 2000,
-        });
-
-        // @ts-ignore
-        watch(this.ws.data, (newData) =>
-        {
-            this.messageHandler(newData);
-        });
-    }
+    constructor() { }
 
     get(): Promise<TResponse<MarketTicker | null>>
     {
@@ -90,6 +75,13 @@ class CoinService implements ICoinService
 
     subscribe(symbol: string): void
     {
+        if(this.subscriptions.indexOf(symbol) !== -1)
+        {
+            return;
+        }
+
+        this.subscriptions.push(symbol);
+
         // @ts-ignore
         this.ws.send(JSON.stringify(
         {
@@ -104,6 +96,15 @@ class CoinService implements ICoinService
 
     unsubscribe(symbol: string): void
     {
+        let index = this.subscriptions.indexOf(symbol);
+
+        if(index === -1)
+        {
+            return;
+        }
+
+        this.subscriptions.splice(index, 1);
+
         // @ts-ignore
         this.ws.send(JSON.stringify(
         {
@@ -114,6 +115,65 @@ class CoinService implements ICoinService
                 "instId": symbol
             }]
         }));
+    }
+
+    unsubscribeAll(): void
+    {
+        for(let i = 0; i < this.subscriptions.length; i++)
+        {
+            // @ts-ignore
+            this.ws.send(JSON.stringify(
+            {
+                "op":"unsubscribe",
+                "args":
+                [{
+                    "channel":"tickers",
+                    "instId": this.subscriptions[i]
+                }]
+            }));
+        }
+
+        this.subscriptions = [];
+    }
+
+    getSubscriptions(): string[]
+    {
+        return this.subscriptions;
+    }
+
+    openWebSocket(): void
+    {
+        if(this.ws)
+        {
+            if(this.ws.status.value === "CLOSED")
+            {
+                this.ws.open();
+            }
+
+            return;
+        }
+
+        // Connect WS
+        const config = useRuntimeConfig();
+
+        this.ws = useWebSocket(config.public.tickerWs,
+        {
+            message: 'ping',
+            interval: 1000,
+            pongTimeout: 1000,
+        });
+
+        // @ts-ignore
+        watch(this.ws.data, (newData) =>
+        {
+            this.messageHandler(newData);
+        });
+    }
+
+    closeWebSocket(): void
+    {
+        // @ts-ignore
+        this.ws.close();
     }
 
     //#region Privates
@@ -127,7 +187,7 @@ class CoinService implements ICoinService
 
         if(index !== -1)
         {
-            let coin_ticker: CoinTicker = tickers.value[index];
+            let coin_ticker = tickers.value[index];
 
             coin_ticker.symbol = update_ticker.instId;
             coin_ticker.symbol_icon = "";
@@ -139,7 +199,6 @@ class CoinService implements ICoinService
             coin_ticker.vol_24h = Number(update_ticker.vol24h);
             coin_ticker.ts = update_ticker.ts;
             coin_ticker.percentage_change = 0;
-            coin_ticker.visibility = true;
 
             this.fixTicker(coin_ticker);
 
@@ -154,9 +213,13 @@ class CoinService implements ICoinService
         ticker.symbol_icon = ticker.symbol.split("-")[0].toLowerCase();
         ticker.instId = ticker.symbol;
         ticker.symbol = ticker.symbol.replace("-", "/");
-        ticker.visibility = true;
 
-        if(usdt_price === "")
+        if(ticker.visibility === undefined)
+        {
+            ticker.visibility = true;
+        }
+
+        if(usdt_price === "0")
         {
             const { getUSDT } = useTickerStore();
 
@@ -169,7 +232,7 @@ class CoinService implements ICoinService
         // Set toman price
         if(ticker.instId !== "USDT-IRT")
         {
-            ticker.toman = Number((Number(usdt_price) * Number(ticker.last)).toFixed(0)).toLocaleString().toString();
+            ticker.toman = Number((Number(usdt_price) * Number(ticker.last)).toFixed(3)).toLocaleString().toString();
         }
 
         // Resolve last price data

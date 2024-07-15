@@ -3,6 +3,9 @@ import { defineStore } from 'pinia';
 import MarketTicker from '~/entities/coin/MarketTicker';
 import CoinTicker from "~/entities/coin/CoinTicker";
 
+// @ts-ignore
+import { useSymbolStore } from '~/store/coin/symbol';
+
 export const useTickerStore = defineStore('ticker',
 {
     state: (): MarketTicker =>
@@ -19,9 +22,9 @@ export const useTickerStore = defineStore('ticker',
             return state.tickers;
         },
 
-        getUSDT: (state) : CoinTicker =>
+        getUSDT: (state) : CoinTicker | null =>
         {
-            let index = state.tickers.indexOf(item => item.instId === "USDT-IRT");
+            let index = state.tickers.map((item: CoinTicker) => item.instId).indexOf("USDT-IRT");
 
             if(index === -1)
             {
@@ -63,11 +66,11 @@ export const useTickerStore = defineStore('ticker',
             }
         },
 
-        search(text: string)
+        search(text: string, tabIndex: number = 0)
         {
             let search_str_len = text.trim().length;
 
-            for(let coin of this.tickers.value)
+            for(let coin of this.tickers)
             {
                 if(search_str_len > 0)
                 {
@@ -77,6 +80,20 @@ export const useTickerStore = defineStore('ticker',
                 {
                     coin.visibility = true;
                 }
+            }
+
+            if(tabIndex === 1)
+            {
+                this.tickers.find((item: CoinTicker) => item.instId === "USDT-IRT").visibility = false;
+            }
+            else if(tabIndex === 2)
+            {
+                this.tickers.filter((item: CoinTicker) => item.instId !== "USDT-IRT").map((item: CoinTicker) => item.visibility = false);
+            }
+            else if(tabIndex === 3)
+            {
+                const { getFavorites } = useSymbolStore();
+                this.tickers.filter((item: CoinTicker) => !getFavorites.includes(item.instId)).map((item: CoinTicker) => item.visibility = false);
             }
         }
     }
