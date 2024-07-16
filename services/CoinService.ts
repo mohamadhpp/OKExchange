@@ -11,11 +11,13 @@ import { Last24HourChangePercentage, TomanPrice } from '~/utils/coin';
 import { watch } from 'vue';
 // @ts-ignore
 import {useWebSocket, UseWebSocketReturn} from '@vueuse/core';
+import selectAll from "css-select";
 
 class CoinService implements ICoinService
 {
     private ws: UseWebSocketReturn<any>;
     private subscriptions: string[] = [];
+    private selectedSymbol = "";
 
     constructor() { }
 
@@ -102,6 +104,11 @@ class CoinService implements ICoinService
 
     unsubscribe(symbol: string): void
     {
+        if(this.selectedSymbol === symbol)
+        {
+            return;
+        }
+
         let index = this.subscriptions.indexOf(symbol);
 
         if(index === -1)
@@ -127,6 +134,11 @@ class CoinService implements ICoinService
     {
         for(let i = 0; i < this.subscriptions.length; i++)
         {
+            if(this.subscriptions[i] === this.selectedSymbol)
+            {
+                continue;
+            }
+
             // @ts-ignore
             this.ws.send(JSON.stringify(
             {
@@ -145,6 +157,19 @@ class CoinService implements ICoinService
     getSubscriptions(): string[]
     {
         return this.subscriptions;
+    }
+
+    //#endregion
+
+    //#region Selected symbol
+
+    setSelectedSymbol(symbol: string): void
+    {
+        this.selectedSymbol = symbol;
+    }
+    getSelectedSymbol(): string
+    {
+        return this.selectedSymbol;
     }
 
     //#endregion
@@ -212,7 +237,7 @@ class CoinService implements ICoinService
             let coin_ticker = tickers.value[index];
 
             coin_ticker.symbol = update_ticker.instId;
-            coin_ticker.symbol_icon = "";
+            coin_ticker.icon = "";
             coin_ticker.last = update_ticker.last;
             coin_ticker.open_24h = update_ticker.open24h;
             coin_ticker.high_24h = Number(update_ticker.high24h);
@@ -232,7 +257,7 @@ class CoinService implements ICoinService
     private fixTicker(ticker: CoinTicker, usdt_price: string = "0"): void
     {
         // Resolve data
-        ticker.symbol_icon = ticker.symbol.split("-")[0].toLowerCase();
+        ticker.icon = ticker.symbol.split("-")[0].toLowerCase();
         ticker.instId = ticker.symbol;
         ticker.symbol = ticker.symbol.replace("-", "/");
 

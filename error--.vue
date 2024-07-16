@@ -33,7 +33,7 @@ useHead({
             </NuxtLink>
         </div>
 
-        <h1 v-else>
+        <h1 v-else class="text-4xl font-bold text-primary-700 text-center" dir="rtl">
             {{error.statusCode}}
         </h1>
     </div>

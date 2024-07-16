@@ -1,13 +1,9 @@
 // @ts-ignore
 import { $fetch, FetchOptions } from 'ofetch';
+
 import FaqModule from '~/repository/modules/FaqModule';
 import CoinModule from '~/repository/modules/CoinModule';
-
-interface IApiInstance
-{
-    faq: FaqModule;
-    coin: CoinModule;
-}
+import IApiInstance from "~/entities/instances/IApiInstance";
 
 export default defineNuxtPlugin((nuxtApp) =>
 {

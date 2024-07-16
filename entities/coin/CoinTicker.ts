@@ -2,7 +2,7 @@ interface CoinTicker
 {
     instId: string,
     symbol: string,
-    symbol_icon: string,
+    icon: string,
     last: string,
     toman: string,
     last_str: string,

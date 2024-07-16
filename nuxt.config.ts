@@ -24,7 +24,7 @@ export default defineNuxtConfig({
 
     routeRules:
     {
-        '/':
+        '/trade/*':
         {
             ssr: false
         }

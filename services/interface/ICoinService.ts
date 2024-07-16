@@ -10,6 +10,8 @@ interface ICoinService
     unsubscribe(symbol: string): void;
     unsubscribeAll(): void;
     getSubscriptions(): string[];
+    setSelectedSymbol(symbol: string): void;
+    getSelectedSymbol(): string;
 }
 
 export default ICoinService;

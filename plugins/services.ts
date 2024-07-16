@@ -1,11 +1,7 @@
 import FaqService from '~/services/FaqService';
 import CoinService from '~/services/CoinService';
 
-interface IServiceInstance
-{
-    faq: FaqService;
-    coin: CoinService;
-}
+import IServiceInstance from "~/entities/instances/IServiceInstance";
 
 export default defineNuxtPlugin((nuxtApp) =>
 {

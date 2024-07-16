@@ -13,14 +13,14 @@
                         class="flex flex-col items-center p-2 rounded-md w-12 h-12 overflow-hidden z-[2]"
                         @click="isOpen = !isOpen"
                 >
-                    <img src="~/assets/icons/aside-menu/close-menu.svg"
+                    <img src="~/assets/icons/menu/close-menu.svg"
                          :class="isOpen ? '' : 'opacity-0 order-last'"
                          class="w-8 h-8"
                          alt="بستن منو"
                          title="بستن منو"
                     />
 
-                    <img src="~/assets/icons/aside-menu/open-menu.svg"
+                    <img src="~/assets/icons/menu/open-menu.svg"
                          :class="isOpen ? 'opacity-0 order-last' : ''"
                          class="w-8 h-8"
                          alt="بازکردن منو"
@@ -37,7 +37,7 @@
                           class="flex flex-row-reverse items-center transition-all duration-500 ease-linear"
                           :class="isOpen ? 'gap-5' : 'gap-0'"
                 >
-                    <img :src="useDynamicallyAssets(`/assets/icons/aside-menu/${item.icon}`)"
+                    <img :src="useDynamicallyAssets(`/assets/icons/menu/${item.icon}`)"
                          :alt="item.title"
                          :title="item.title"
                          class="w-7"
@@ -59,7 +59,7 @@
 
 export default
 {
-    name: "asideMenu",
+    name: "asideNavigationBar",
 
     data()
     {

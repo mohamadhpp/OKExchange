@@ -1,0 +1,18 @@
+<svg width="90" height="88" viewBox="0 0 90 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g filter="url(#filter0_f_552_14976)">
+        <path d="M61.6667 65.4334H48.3333L33.4999 75.2999C31.2999 76.7666 28.3333 75.2001 28.3333 72.5334V65.4334C18.3333 65.4334 11.6667 58.7667 11.6667 48.7667V28.7665C11.6667 18.7665 18.3333 12.0999 28.3333 12.0999H61.6667C71.6667 12.0999 78.3333 18.7665 78.3333 28.7665V48.7667C78.3333 58.7667 71.6667 65.4334 61.6667 65.4334Z" stroke="#BDDAFF" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M44.9994 41.8662V41.1663C44.9994 38.8997 46.3995 37.6996 47.7995 36.733C49.1662 35.7996 50.5326 34.5997 50.5326 32.3997C50.5326 29.333 48.0661 26.8662 44.9994 26.8662C41.9327 26.8662 39.4662 29.333 39.4662 32.3997" stroke="#BDDAFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M44.985 49.8334H45.015" stroke="#BDDAFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <path d="M61.6667 65.4334H48.3333L33.4999 75.2999C31.2999 76.7666 28.3333 75.2001 28.3333 72.5334V65.4334C18.3333 65.4334 11.6667 58.7667 11.6667 48.7667V28.7665C11.6667 18.7665 18.3333 12.0999 28.3333 12.0999H61.6667C71.6667 12.0999 78.3333 18.7665 78.3333 28.7665V48.7667C78.3333 58.7667 71.6667 65.4334 61.6667 65.4334Z" stroke="#BDDAFF" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M44.9994 41.8662V41.1663C44.9994 38.8997 46.3995 37.6996 47.7995 36.733C49.1662 35.7996 50.5326 34.5997 50.5326 32.3997C50.5326 29.333 48.0661 26.8662 44.9994 26.8662C41.9327 26.8662 39.4662 29.333 39.4662 32.3997" stroke="#BDDAFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M44.985 49.8334H45.015" stroke="#BDDAFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <defs>
+        <filter id="filter0_f_552_14976" x="0.166656" y="0.599854" width="89.6667" height="86.7649" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+            <feGaussianBlur stdDeviation="5" result="effect1_foregroundBlur_552_14976"/>
+        </filter>
+    </defs>
+</svg>
+
