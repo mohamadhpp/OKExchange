@@ -1,6 +1,7 @@
 # Project Pages
 
 [Faq Page](http://localhost:3000/support/faq)
+
 [Trade BTC USDT](http://localhost:3000/trade/BTC_USDT)
 
 ## Setup
