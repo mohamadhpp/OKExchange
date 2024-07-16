@@ -1,6 +1,7 @@
-# Nuxt 3 Minimal Starter
+# Project Pages
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+[Faq Page](http://localhost:3000/support/faq)
+[Trade BTC USDT](http://localhost:3000/trade/BTC_USDT)
 
 ## Setup
 
