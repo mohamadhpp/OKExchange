@@ -1,6 +1,5 @@
 import TResponse from "~/entities/TResponse";
 import MarketTicker from "~/entities/coin/MarketTicker";
-import CoinTicker from "~/entities/coin/CoinTicker";
 
 interface ICoinService
 {

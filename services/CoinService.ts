@@ -5,12 +5,16 @@ import CoinUpdateTicker from "~/entities/coin/CoinUpdateTicker";
 import ICoinService from "~/services/interface/ICoinService";
 import { useTickerStore } from '~/store/coin/ticker';
 
+import { Last24HourChangePercentage, TomanPrice } from '~/utils/coin';
+
 // @ts-ignore
 import { watch } from 'vue';
+// @ts-ignore
+import {useWebSocket, UseWebSocketReturn} from '@vueuse/core';
 
 class CoinService implements ICoinService
 {
-    private ws: undefined;
+    private ws: UseWebSocketReturn<any>;
     private subscriptions: string[] = [];
 
     constructor() { }
@@ -72,6 +76,8 @@ class CoinService implements ICoinService
             resolve(response);
         });
     }
+
+    //#region Subscriptions
 
     subscribe(symbol: string): void
     {
@@ -141,8 +147,14 @@ class CoinService implements ICoinService
         return this.subscriptions;
     }
 
+    //#endregion
+
+    //#region Web Socket
+
     openWebSocket(): void
     {
+        let self = this;
+
         if(this.ws)
         {
             if(this.ws.status.value === "CLOSED")
@@ -158,9 +170,17 @@ class CoinService implements ICoinService
 
         this.ws = useWebSocket(config.public.tickerWs,
         {
-            message: 'ping',
-            interval: 1000,
-            pongTimeout: 1000,
+            autoReconnect:
+            {
+                retries: 5,
+                delay: 1000,
+
+                onFailed()
+                {
+                    self.closeWebSocket();
+                    self.openWebSocket();
+                }
+            }
         });
 
         // @ts-ignore
@@ -176,7 +196,9 @@ class CoinService implements ICoinService
         this.ws.close();
     }
 
-    //#region Privates
+    //#endregion
+
+    //#region Private
 
     private messageHandler(data: any)
     {
@@ -232,7 +254,7 @@ class CoinService implements ICoinService
         // Set toman price
         if(ticker.instId !== "USDT-IRT")
         {
-            ticker.toman = Number((Number(usdt_price) * Number(ticker.last)).toFixed(3)).toLocaleString().toString();
+            ticker.toman = TomanPrice(Number(ticker.last), Number(usdt_price));
         }
 
         // Resolve last price data
@@ -244,7 +266,7 @@ class CoinService implements ICoinService
         }
 
         // Calculate last 24 hours changes percentage
-        ticker.percentage_change = Number((((Number(ticker.last) - Number(ticker.open_24h)) / Number(ticker.open_24h)) * 100).toFixed(2));
+        ticker.percentage_change = Last24HourChangePercentage(Number(ticker.last),  Number(ticker.open_24h));
     }
 
     //#endregion

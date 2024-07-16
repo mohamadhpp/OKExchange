@@ -58,14 +58,14 @@ useScriptTag("/material/scripts/popover.js")
                             مقابل را اسکن کنید.
                         </p>
 
-                        <NuxtLink class="select-none rounded-lg border border-primary py-2 px-3 text-center align-middle text-base font-yekanbakh uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        <NuxtLink class="select-none rounded-lg border border-primary py-2 px-3 text-center align-middle text-base font-yekanbakh uppercase text-primary focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                                   to="/"
                         >
                             دانلود اپلیکیشن
                         </NuxtLink>
                     </div>
 
-                    <img src="~/assets/images/qr-code-download.png"
+                    <img src="~/assets/images/menu/qr-code-download.png"
                          alt="کیو آر کد دانلود اپلیکیشن"
                          title="کیو آر کد دانلود اپلیکیشن"
                          class="h-full"
@@ -92,83 +92,13 @@ useScriptTag("/material/scripts/popover.js")
                     </li>
 
                     <li>
-                        <button id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown" class="flex items-center justify-between w-full py-2 px-3 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:border-0 md:hover:text-primary-900 md:p-0">
+                        <button class="flex items-center justify-between w-full py-2 px-3 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:border-0 md:hover:text-primary-900 md:p-0">
                             خرید و فروش ارز دیجیتال
 
                             <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                             </svg>
                         </button>
-
-                        <div id="mega-menu-dropdown" class="absolute z-10 grid hidden w-auto grid-cols-2 text-sm bg-white border border-gray-100 rounded-lg shadow-md">
-                            <div class="p-4 pb-0 text-gray-900 md:pb-4">
-                                <ul class="space-y-4" aria-labelledby="mega-menu-dropdown-button">
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            About Us
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            Library
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            Resources
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            Pro Version
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="p-4 pb-0 text-gray-900 md:pb-4">
-                                <ul class="space-y-4">
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            Blog
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            Newsletter
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            Playground
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            License
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="p-4">
-                                <ul class="space-y-4">
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            Contact Us
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            Support Center
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-gray-500">
-                                            Terms
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </li>
 
                     <li>

@@ -19,8 +19,8 @@ onMounted(() =>
 
 import { useScroll } from '@vueuse/core';
 
-const pageContent = ref(null);
-const { y } = useScroll(pageContent);
+const content = ref(null);
+const { y } = useScroll(content);
 
 //#endregion
 
@@ -34,9 +34,9 @@ const { y } = useScroll(pageContent);
         />
 
         <div class="w-full h-full flex flex-row-reverse items-center">
-            <layout-aside-menu class="h-full" />
+            <layout-aside-menu class="h-full" v-show="useRoute().name === 'faq'" />
 
-            <div class="w-full h-full overflow-y-auto overflow-x-hidden no-scrollbar" ref="pageContent">
+            <div class="w-full h-full overflow-y-auto overflow-x-hidden no-scrollbar" ref="content">
                 <slot />
             </div>
         </div>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { ref, watch } from 'vue';
+import { ref, watch, onUnmounted } from 'vue';
 
 //#region Fetch Data
 
@@ -68,10 +68,9 @@ useHead({
     title: 'سوالات متداول | اوکی اکسچنج'
 });
 
-import { useScriptTag } from '@vueuse/core'
-import { onUnmounted } from "vue";
+import { useScriptTag } from '@vueuse/core';
 
-const { scriptTag, load, unload } = useScriptTag(
+const { load, unload } = useScriptTag(
 '/material/scripts/collapse.js',
 () => { },
 { manual: true }
@@ -152,7 +151,7 @@ onUnmounted(async () =>
         <div v-else-if="!faqs.status" class="w-full flex flex-col items-center justify-center">
             <div class="p-7 rounded-lg bg-gray-100">
                 <p dir="rtl">
-                    مشکلی در فرآیند نمایش اطلاعات بوجود آمده است!
+                    مشکلی در فرآیند دریافت اطلاعات بوجود آمده است!
                 </p>
             </div>
         </div>
